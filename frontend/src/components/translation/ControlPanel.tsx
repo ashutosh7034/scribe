@@ -14,6 +14,7 @@ import {
   Divider,
   Tooltip,
 } from '@mui/material';
+import { SxProps, Theme } from '@mui/material/styles';
 import {
   Mic as MicIcon,
   MicOff as MicOffIcon,
