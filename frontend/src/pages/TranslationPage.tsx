@@ -9,7 +9,6 @@ import {
   Grid,
   Paper,
   Typography,
-  Box,
   Alert,
   Skeleton,
 } from '@mui/material';
@@ -222,7 +221,7 @@ const TranslationPage: React.FC = () => {
   }, [isTranslating]);
 
   return (
-    <Box style={{ height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
       {/* Browser Compatibility Check */}
       <BrowserCompatibility />
 
@@ -284,7 +283,7 @@ const TranslationPage: React.FC = () => {
               minHeight: '400px',
             }}
           >
-            <Box style={{ padding: 16, borderBottom: '1px solid #e0e0e0' }}>
+            <div style={{ padding: 16, borderBottom: '1px solid #e0e0e0' }}>
               <Typography variant="h6">
                 Sign Language Avatar
               </Typography>
@@ -293,16 +292,16 @@ const TranslationPage: React.FC = () => {
                   {selectedAvatar.name}
                 </Typography>
               )}
-            </Box>
+            </div>
 
-            <Box style={{ flexGrow: 1, position: 'relative' }}>
+            <div style={{ flexGrow: 1, position: 'relative' }}>
               {isLoadingTranslation ? (
-                <Box style={{ padding: 16 }}>
+                <div style={{ padding: 16 }}>
                   <Skeleton variant="rectangular" height={300} />
                   <Typography variant="body2" style={{ marginTop: 8, textAlign: 'center' }}>
                     Initializing translation services...
                   </Typography>
-                </Box>
+                </div>
               ) : (
                 <AvatarViewport
                   avatar={selectedAvatar}
@@ -312,7 +311,7 @@ const TranslationPage: React.FC = () => {
                   quality="standard"
                 />
               )}
-            </Box>
+            </div>
           </Paper>
         </Grid>
 
@@ -320,8 +319,8 @@ const TranslationPage: React.FC = () => {
         <Grid item xs={12} md={3}>
           <Paper 
             elevation={2} 
-            sx={{ 
-              p: 2, 
+            style={{ 
+              padding: 16, 
               height: '100%',
               display: 'flex',
               flexDirection: 'column',
@@ -338,7 +337,7 @@ const TranslationPage: React.FC = () => {
           </Paper>
         </Grid>
       </Grid>
-    </Box>
+    </div>
   );
 };
 

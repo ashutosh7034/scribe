@@ -6,7 +6,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { Alert, AlertTitle, Typography } from '@mui/material';
-import { audioService } from '../../services/audioService';
 
 interface BrowserCompatibilityProps {
   onCompatibilityCheck?: (isCompatible: boolean) => void;

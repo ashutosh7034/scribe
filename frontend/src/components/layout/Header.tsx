@@ -10,7 +10,6 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  Box,
   Button,
 } from '@mui/material';
 import {
@@ -32,7 +31,7 @@ const Header: React.FC = () => {
     <AppBar position="static" elevation={1}>
       <Toolbar>
         {/* Logo and Title */}
-        <Box style={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <AccessibilityIcon style={{ marginRight: 8 }} />
           <Typography
             variant="h6"
@@ -54,10 +53,10 @@ const Header: React.FC = () => {
           >
             Real-time Sign Language Translation
           </Typography>
-        </Box>
+        </div>
 
         {/* Navigation Buttons */}
-        <Box style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Button
             color="inherit"
             onClick={() => handleNavigation('/')}
@@ -99,7 +98,7 @@ const Header: React.FC = () => {
           >
             <PersonIcon />
           </IconButton>
-        </Box>
+        </div>
       </Toolbar>
     </AppBar>
   );

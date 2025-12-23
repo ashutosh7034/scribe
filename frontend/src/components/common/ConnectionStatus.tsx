@@ -6,7 +6,6 @@
 
 import React from 'react';
 import {
-  Box,
   Chip,
   Typography,
 } from '@mui/material';
@@ -69,7 +68,7 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
   };
 
   return (
-    <Box
+    <div
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -90,7 +89,7 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
           Check your internet connection
         </Typography>
       )}
-    </Box>
+    </div>
   );
 };
 

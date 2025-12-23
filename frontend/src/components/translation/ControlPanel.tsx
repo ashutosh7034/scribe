@@ -20,7 +20,6 @@ import {
   PlayArrow as PlayIcon,
   Stop as StopIcon,
   Settings as SettingsIcon,
-  VolumeUp as VolumeIcon,
 } from '@mui/icons-material';
 import { ControlPanelProps } from '../../types';
 
