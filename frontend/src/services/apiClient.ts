@@ -16,7 +16,7 @@ import {
   TranslationSession,
   TranslationFeedback,
   ScribeError 
-} from '@/types';
+} from '../types';
 
 class ApiClient {
   private client: AxiosInstance;

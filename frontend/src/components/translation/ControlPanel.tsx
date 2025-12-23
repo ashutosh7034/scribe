@@ -22,7 +22,7 @@ import {
   Settings as SettingsIcon,
   VolumeUp as VolumeIcon,
 } from '@mui/icons-material';
-import { ControlPanelProps } from '@/types';
+import { ControlPanelProps } from '../../types';
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
   isTranslating,

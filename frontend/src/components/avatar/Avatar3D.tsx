@@ -21,7 +21,7 @@ import {
   InterpolateLinear,
   Euler
 } from 'three';
-import { Avatar, PoseKeyframe, FacialExpressionKeyframe } from '@/types';
+import { Avatar, PoseKeyframe, FacialExpressionKeyframe } from '../../types';
 
 interface Avatar3DProps {
   avatar: Avatar;
@@ -111,7 +111,7 @@ const Avatar3D: React.FC<Avatar3DProps> = ({
     Object.entries(JOINT_HIERARCHY).forEach(([name, config]) => {
       const bone = new Bone();
       bone.name = name;
-      bone.position.set(...config.position);
+      bone.position.set(config.position[0], config.position[1], config.position[2]);
       bones.push(bone);
       boneMap[name] = bone;
     });

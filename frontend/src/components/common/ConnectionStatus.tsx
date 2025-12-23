@@ -9,8 +9,6 @@ import {
   Box,
   Chip,
   Typography,
-  SxProps,
-  Theme,
 } from '@mui/material';
 import {
   Wifi as WifiIcon,
@@ -24,13 +22,13 @@ import {
 interface ConnectionStatusProps {
   isConnected: boolean;
   quality: 'excellent' | 'good' | 'fair' | 'poor';
-  sx?: SxProps<Theme>;
+  style?: React.CSSProperties;
 }
 
 const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
   isConnected,
   quality,
-  sx,
+  style,
 }) => {
   const getQualityIcon = () => {
     if (!isConnected) return <WifiOffIcon />;
@@ -72,11 +70,11 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
 
   return (
     <Box
-      sx={{
+      style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 1,
-        ...sx,
+        gap: 8,
+        ...style,
       }}
     >
       <Chip

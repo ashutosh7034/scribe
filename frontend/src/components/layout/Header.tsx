@@ -32,12 +32,12 @@ const Header: React.FC = () => {
     <AppBar position="static" elevation={1}>
       <Toolbar>
         {/* Logo and Title */}
-        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <AccessibilityIcon sx={{ mr: 1 }} />
+        <Box style={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+          <AccessibilityIcon style={{ marginRight: 8 }} />
           <Typography
             variant="h6"
             component="h1"
-            sx={{ 
+            style={{ 
               fontWeight: 'bold',
               cursor: 'pointer',
             }}
@@ -47,10 +47,9 @@ const Header: React.FC = () => {
           </Typography>
           <Typography
             variant="body2"
-            sx={{ 
-              ml: 1, 
+            style={{ 
+              marginLeft: 8, 
               opacity: 0.8,
-              display: { xs: 'none', sm: 'block' }
             }}
           >
             Real-time Sign Language Translation
@@ -58,11 +57,11 @@ const Header: React.FC = () => {
         </Box>
 
         {/* Navigation Buttons */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Button
             color="inherit"
             onClick={() => handleNavigation('/')}
-            sx={{ 
+            style={{ 
               textTransform: 'none',
               backgroundColor: location.pathname === '/' ? 'rgba(255,255,255,0.1)' : 'transparent'
             }}
@@ -73,7 +72,7 @@ const Header: React.FC = () => {
           <Button
             color="inherit"
             onClick={() => handleNavigation('/avatars')}
-            sx={{ 
+            style={{ 
               textTransform: 'none',
               backgroundColor: location.pathname === '/avatars' ? 'rgba(255,255,255,0.1)' : 'transparent'
             }}
@@ -85,7 +84,7 @@ const Header: React.FC = () => {
             color="inherit"
             onClick={() => handleNavigation('/settings')}
             aria-label="Settings"
-            sx={{
+            style={{
               backgroundColor: location.pathname === '/settings' ? 'rgba(255,255,255,0.1)' : 'transparent'
             }}
           >
@@ -96,7 +95,7 @@ const Header: React.FC = () => {
           <IconButton
             color="inherit"
             aria-label="User profile"
-            sx={{ ml: 1 }}
+            style={{ marginLeft: 8 }}
           >
             <PersonIcon />
           </IconButton>

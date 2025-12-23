@@ -6,7 +6,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { AppState, Avatar, TranslationSession, ScribeError } from '@/types';
+import { AppState, Avatar, TranslationSession, ScribeError } from '../types';
 
 interface AppStore extends AppState {
   // Actions

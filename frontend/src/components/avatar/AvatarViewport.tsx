@@ -8,7 +8,7 @@ import React, { useRef, useEffect, useState, Suspense } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, PerspectiveCamera } from '@react-three/drei';
-import { AvatarViewportProps } from '@/types';
+import { AvatarViewportProps } from '../../types';
 import Avatar3D from './Avatar3D';
 
 const AvatarViewport: React.FC<AvatarViewportProps> = ({
