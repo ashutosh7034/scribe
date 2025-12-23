@@ -16,6 +16,8 @@ from app.schemas.avatar import (
     AvatarCustomizationCreate,
     AvatarCustomizationResponse,
 )
+from app.schemas.translation import PoseKeyframe, FacialExpressionKeyframe
+from app.services.avatar_rendering import avatar_rendering_service
 
 router = APIRouter()
 
@@ -180,3 +182,84 @@ async def delete_customization(
     db.commit()
     
     return {"message": "Customization deleted successfully"}
+
+
+@router.post("/render/poses")
+async def generate_avatar_poses(
+    text: str,
+    emotion: Optional[str] = None,
+    emotion_intensity: float = 0.5,
+    signing_speed: float = 1.0
+):
+    """
+    Generate pose sequence for avatar animation from text input.
+    
+    This endpoint creates the skeletal animation data needed for 3D avatar
+    rendering of sign language gestures.
+    """
+    try:
+        # Generate pose sequence
+        pose_sequence = avatar_rendering_service.generate_pose_sequence(
+            text=text,
+            emotion=emotion,
+            emotion_intensity=emotion_intensity,
+            signing_speed=signing_speed
+        )
+        
+        # Generate facial expressions
+        facial_expressions = avatar_rendering_service.generate_facial_expressions(
+            text=text,
+            emotion=emotion,
+            emotion_intensity=emotion_intensity
+        )
+        
+        # Validate the sequence
+        is_valid = avatar_rendering_service.validate_pose_sequence(pose_sequence)
+        
+        # Get performance metrics
+        metrics = avatar_rendering_service.get_avatar_performance_metrics(pose_sequence)
+        
+        return {
+            "pose_sequence": pose_sequence,
+            "facial_expressions": facial_expressions,
+            "is_valid": is_valid,
+            "metrics": metrics,
+            "text": text,
+            "emotion": emotion,
+            "emotion_intensity": emotion_intensity,
+            "signing_speed": signing_speed
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Avatar rendering failed: {str(e)}")
+
+
+@router.get("/render/performance/{avatar_id}")
+async def get_avatar_performance(
+    avatar_id: int,
+    db: Session = Depends(get_db)
+):
+    """Get performance characteristics for a specific avatar."""
+    
+    avatar = db.query(Avatar).filter(
+        Avatar.id == avatar_id,
+        Avatar.is_active == True
+    ).first()
+    
+    if not avatar:
+        raise HTTPException(status_code=404, detail="Avatar not found")
+    
+    # Simulate performance metrics based on avatar complexity
+    performance = {
+        "avatar_id": avatar_id,
+        "estimated_render_fps": 60,
+        "memory_usage_mb": 128,
+        "gpu_usage_percent": 45,
+        "joint_count": 55,  # SMPL-X standard
+        "polygon_count": 8000,
+        "texture_size_mb": 16,
+        "supports_real_time": True,
+        "recommended_quality": "standard"
+    }
+    
+    return performance

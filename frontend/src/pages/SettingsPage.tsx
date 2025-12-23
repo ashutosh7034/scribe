@@ -19,7 +19,7 @@ import {
   Slider,
   Divider,
 } from '@mui/material';
-import { useAppStore } from '@/store/appStore';
+import { useAppStore } from '../store/appStore';
 
 const SettingsPage: React.FC = () => {
   const {

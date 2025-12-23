@@ -278,7 +278,10 @@ class SpeechToTextService:
             }
             
             # Call callback with enhanced result
-            callback(transcription_result)
+            if asyncio.iscoroutinefunction(callback):
+                await callback(transcription_result)
+            else:
+                callback(transcription_result)
             
         except Exception as e:
             logger.error(f"Error processing audio chunk: {e}")
@@ -557,7 +560,7 @@ class SpeechProcessingPipeline:
         """
         start_time = datetime.now()
         
-        def enhanced_callback(transcription_result: Dict[str, Any]):
+        async def enhanced_callback(transcription_result: Dict[str, Any]):
             """Enhanced callback that adds multi-speaker processing."""
             # Process speaker diarization
             enhanced_result = self.multi_speaker_processor.process_speaker_diarization(
@@ -578,7 +581,10 @@ class SpeechProcessingPipeline:
             )
             
             # Call original callback
-            result_callback(enhanced_result)
+            if asyncio.iscoroutinefunction(result_callback):
+                await result_callback(enhanced_result)
+            else:
+                result_callback(enhanced_result)
         
         # Start processing
         await self.stt_service.process_audio_stream(

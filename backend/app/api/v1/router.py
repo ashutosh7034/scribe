@@ -6,7 +6,7 @@ Main router that includes all API endpoints for version 1.
 
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import translation, avatars, users, health
+from app.api.v1.endpoints import translation, avatars, users, health, emotion, signing_modulation
 
 api_router = APIRouter()
 
@@ -15,3 +15,5 @@ api_router.include_router(health.router, prefix="/health", tags=["health"])
 api_router.include_router(translation.router, prefix="/translate", tags=["translation"])
 api_router.include_router(avatars.router, prefix="/avatars", tags=["avatars"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
+api_router.include_router(emotion.router, prefix="/emotion", tags=["emotion"])
+api_router.include_router(signing_modulation.router, prefix="/signing-modulation", tags=["signing-modulation"])

@@ -14,11 +14,11 @@ import {
   Skeleton,
 } from '@mui/material';
 
-import { useAppStore } from '@/store/appStore';
-import AvatarViewport from '@/components/avatar/AvatarViewport';
-import ControlPanel from '@/components/translation/ControlPanel';
-import TranscriptDisplay from '@/components/translation/TranscriptDisplay';
-import ConnectionStatus from '@/components/common/ConnectionStatus';
+import { useAppStore } from '../store/appStore';
+import AvatarViewport from '../components/avatar/AvatarViewport';
+import ControlPanel from '../components/translation/ControlPanel';
+import TranscriptDisplay from '../components/translation/TranscriptDisplay';
+import ConnectionStatus from '../components/common/ConnectionStatus';
 
 const TranslationPage: React.FC = () => {
   const {

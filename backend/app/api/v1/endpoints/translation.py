@@ -23,6 +23,7 @@ from app.schemas.translation import (
 )
 from app.services.speech_processing import SpeechProcessingPipeline
 from app.services.webrtc_service import webrtc_service
+from app.services.sign_language_translation import get_translation_service, SignLanguage
 
 logger = logging.getLogger(__name__)
 
@@ -44,37 +45,33 @@ async def translate_text(
     # Generate session ID if not provided
     session_id = request.session_id or str(uuid.uuid4())
     
-    # TODO: Implement actual translation logic
-    # For now, return mock response structure
+    # Get translation service
+    sign_language = SignLanguage.ASL  # Default to ASL, could be from request
+    if hasattr(request, 'target_sign_language') and request.target_sign_language == "BSL":
+        sign_language = SignLanguage.BSL
     
-    mock_response = TranslationResponse(
-        session_id=session_id,
-        original_text=request.text,
-        normalized_text=request.text.upper(),  # Simplified normalization
-        pose_sequence=[
-            {
-                "timestamp": 0.0,
-                "joints": {
-                    "right_hand": {"x": 0.5, "y": 0.8, "z": 0.2},
-                    "left_hand": {"x": -0.5, "y": 0.8, "z": 0.2},
-                    # ... more joint positions
-                }
-            }
-        ],
-        facial_expressions=[
-            {
-                "timestamp": 0.0,
-                "expression": "neutral",
-                "intensity": 0.5
-            }
-        ],
-        duration_ms=len(request.text) * 100,  # Rough estimate
-        emotion_detected="neutral",
-        confidence_score=0.85,
-        processing_time_ms=150
+    translation_service = get_translation_service(sign_language)
+    
+    # Perform translation
+    translation_result = translation_service.translate_text(
+        request.text, 
+        emotion_intensity=request.emotion_intensity
     )
     
-    return mock_response
+    # Convert to API response format
+    response = TranslationResponse(
+        session_id=session_id,
+        original_text=translation_result.original_text,
+        normalized_text=translation_result.normalized_text,
+        pose_sequence=translation_result.to_pose_sequence(),
+        facial_expressions=translation_result.to_facial_expressions(),
+        duration_ms=translation_result.total_duration_ms,
+        emotion_detected="neutral",  # TODO: Integrate with emotion analysis service
+        confidence_score=translation_result.confidence_score,
+        processing_time_ms=translation_result.processing_time_ms
+    )
+    
+    return response
 
 
 @router.websocket("/stream")
@@ -172,28 +169,55 @@ async def _start_audio_processing(connection_id: str,
     async def process_transcription_result(result: Dict[str, Any]):
         """Process and send transcription results to client."""
         try:
-            # Create translation response from speech processing result
-            translation_response = {
-                'type': 'translation_result',
-                'session_id': connection_id,
-                'timestamp': result.get('start_time', 0),
-                'transcription': {
-                    'text': result.get('transcript', ''),
-                    'confidence': result.get('confidence', 0.0),
-                    'is_partial': result.get('is_partial', True),
-                    'speaker_label': result.get('speaker_label', 'unknown'),
-                    'active_speakers': result.get('active_speakers', []),
-                    'speaker_count': result.get('speaker_count', 1)
-                },
-                'pose_data': {
-                    # TODO: Generate actual pose data from transcript
-                    'right_hand': {'x': 0.5, 'y': 0.8, 'z': 0.2},
-                    'left_hand': {'x': -0.5, 'y': 0.8, 'z': 0.2},
-                },
-                'facial_expression': 'neutral',
-                'processing_time_ms': result.get('processing_time_ms', 0),
-                'pipeline_stats': result.get('pipeline_stats', {})
-            }
+            # Get translation service
+            translation_service = get_translation_service(SignLanguage.ASL)
+            
+            # Translate the transcribed text
+            transcript = result.get('transcript', '')
+            if transcript.strip():
+                translation_result = translation_service.translate_text(transcript)
+                
+                # Create translation response from speech processing result
+                translation_response = {
+                    'type': 'translation_result',
+                    'session_id': connection_id,
+                    'timestamp': result.get('start_time', 0),
+                    'transcription': {
+                        'text': transcript,
+                        'confidence': result.get('confidence', 0.0),
+                        'is_partial': result.get('is_partial', True),
+                        'speaker_label': result.get('speaker_label', 'unknown'),
+                        'active_speakers': result.get('active_speakers', []),
+                        'speaker_count': result.get('speaker_count', 1)
+                    },
+                    'translation': {
+                        'original_text': translation_result.original_text,
+                        'normalized_text': translation_result.normalized_text,
+                        'pose_sequence': translation_result.to_pose_sequence(),
+                        'facial_expressions': translation_result.to_facial_expressions(),
+                        'duration_ms': translation_result.total_duration_ms,
+                        'confidence_score': translation_result.confidence_score
+                    },
+                    'processing_time_ms': result.get('processing_time_ms', 0),
+                    'pipeline_stats': result.get('pipeline_stats', {})
+                }
+            else:
+                # No transcript, send basic response
+                translation_response = {
+                    'type': 'translation_result',
+                    'session_id': connection_id,
+                    'timestamp': result.get('start_time', 0),
+                    'transcription': {
+                        'text': '',
+                        'confidence': 0.0,
+                        'is_partial': True,
+                        'speaker_label': 'unknown',
+                        'active_speakers': [],
+                        'speaker_count': 0
+                    },
+                    'translation': None,
+                    'processing_time_ms': result.get('processing_time_ms', 0)
+                }
             
             await websocket.send_json(translation_response)
             

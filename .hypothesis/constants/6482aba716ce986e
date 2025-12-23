@@ -1,0 +1,4 @@
+# file: C:\Users\ashutosh\Documents\scribe-1\backend\app\core\config.py
+# hypothesis_version: 6.148.8
+
+[300, 1000, '.env', '1920x1080', 'development', 'en-US', 'us-east-1']

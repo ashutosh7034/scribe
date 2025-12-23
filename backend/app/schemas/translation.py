@@ -9,6 +9,26 @@ from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
 
 
+class Vector3(BaseModel):
+    """3D vector representation."""
+    x: float
+    y: float
+    z: float
+
+
+class PoseKeyframe(BaseModel):
+    """Keyframe for 3D pose animation."""
+    timestamp: float = Field(..., description="Timestamp in milliseconds")
+    joints: Dict[str, Vector3] = Field(..., description="Joint positions/rotations")
+
+
+class FacialExpressionKeyframe(BaseModel):
+    """Keyframe for facial expression animation."""
+    timestamp: float = Field(..., description="Timestamp in milliseconds")
+    expression: str = Field(..., description="Expression name")
+    intensity: float = Field(..., ge=0.0, le=1.0, description="Expression intensity")
+
+
 class TranslationRequest(BaseModel):
     """Request schema for real-time translation."""
     
@@ -29,8 +49,8 @@ class TranslationResponse(BaseModel):
     normalized_text: str = Field(..., description="Text normalized for sign language")
     
     # Avatar animation data
-    pose_sequence: List[Dict[str, Any]] = Field(..., description="3D pose keyframes for avatar")
-    facial_expressions: List[Dict[str, Any]] = Field(..., description="Facial expression keyframes")
+    pose_sequence: List[PoseKeyframe] = Field(..., description="3D pose keyframes for avatar")
+    facial_expressions: List[FacialExpressionKeyframe] = Field(..., description="Facial expression keyframes")
     duration_ms: int = Field(..., description="Total animation duration in milliseconds")
     
     # Metadata
