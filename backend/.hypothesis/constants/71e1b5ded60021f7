@@ -1,0 +1,4 @@
+# file: C:\Users\ashutosh\Documents\scribe-1\backend\app\services\speech_processing.py
+# hypothesis_version: 6.148.8
+
+[0.0, 0.01, 0.1, 0.2, 0.5, 0.7, 0.85, 1.0, 5.0, 30.0, 32768.0, 1000, 16000, 'BANK_ACCOUNT_NUMBER', 'CREDIT_DEBIT_NUMBER', 'ContentRedactionType', 'LanguageCode', 'MaxSpeakerLabels', 'MediaEncoding', 'MediaSampleRateHertz', 'NumberOfChannels', 'PII', 'PiiEntityTypes', 'Processing', 'SSN', 'ShowSpeakerLabels', 'active_speakers', 'alternatives', 'average_confidence', 'ch_0', 'channel_label', 'channel_labels', 'channels', 'confidence', 'content', 'end_time', 'is_partial', 'is_speaker_change', 'items', 'last_activity', 'medium', 'pcm', 'pipeline_stats', 'primary_speaker', 'processing_time_ms', 'pronunciation', 'segment_count', 'speaker_confidence', 'speaker_count', 'speaker_label', 'speaker_labels', 'speaker_overlap', 'speakers', 'spk_0', 'spk_1', 'spk_2', 'start_time', 'total_duration', 'transcribe', 'transcript', 'type', 'unknown']
